@@ -1,0 +1,30 @@
+services:
+  mongo:
+    image: mongo:8.0.5-rc2
+    container_name: mongo
+    volumes:
+      - ./tmp/db/:/data/db/
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+    networks: 
+      - devnetwork
+  postgres:
+    image: postgres:17.3-alpine3.21
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./tmp:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: traning
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - devnetwork
+  
+networks: 
+  devnetwork:
+    external: true
