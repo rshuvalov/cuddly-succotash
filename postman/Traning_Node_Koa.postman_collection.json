@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "5cdecf70-0e6c-4c07-a122-ad520621332d",
+		"name": "Traning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30309860"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{defaultUserEmail}}\",\n    \"password\": \"{{defaultUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/sign-in",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{defaultUserEmail}}\",\n    \"name\": \"Random User\",\n    \"password\": \"{{defaultUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/sign-up",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\",\n    \"name\": \"{{$randomFullName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"Muriel_Cruickshank88@hotmail.com\",\n    \"password\": \"$2b$10$.U15k.DVgul9/XzK2lDlN.7dA9ctqKK0K8kyc3Vq1yYC6JLI.MlPa\",\n    \"name\": \"Maurice Schmidt\",\n    \"_id\": \"e47536f2-6ffd-42d6-b0c7-623202a7c5f4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users/:userId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "e47536f2-6ffd-42d6-b0c7-623202a7c5f4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/:userId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "67b226b1d2ed4f5e337bf924"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const getOptions = (email, password) => {",
+					"    const options = {",
+					"        url:  `${pm.variables.get('domain')}/auth/sign-in`, ",
+					"        method: 'POST',",
+					"        header: {",
+					"            'Accept': '*/*',",
+					"            'Content-Type': 'application/json',",
+					"        },",
+					"        body: JSON.stringify({",
+					"            email,",
+					"            password,",
+					"        }),",
+					"    }",
+					"",
+					"    return options;",
+					"};",
+					"",
+					"const userOptions = getOptions(",
+					"    pm.variables.get('defaultUserEmail'),",
+					"    pm.variables.get('defaultUserPassword')",
+					");",
+					"pm.sendRequest(userOptions, function (err, response) {",
+					"    try {",
+					"        const { token } = response.json();",
+					"        pm.collectionVariables.set('token', token);",
+					"    } catch (err) {",
+					"        //",
+					"    }",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
