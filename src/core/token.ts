@@ -3,7 +3,6 @@ import config from '../config';
 
 export const createToken = (user) => jwt.sign(
   {
-    // exp: Math.floor(Date.now() / 1000) + 60,
     data: {
       id: user.id,
     },

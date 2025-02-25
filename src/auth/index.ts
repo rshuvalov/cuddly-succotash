@@ -17,7 +17,7 @@ authRouter.post('/sign-up',
       ctx.status = 201;
       ctx.body = user;
     } catch (err) {
-      ctx.throw(err.message, 400);
+      ctx.throw(400, err.message);
     }
   }
 );
@@ -36,7 +36,7 @@ authRouter.post('/sign-in',
         token: createToken(user),
       };
     } catch (err) {
-      ctx.throw(err.message, 401);
+      ctx.throw(401, err.message);
     }
   }
 );

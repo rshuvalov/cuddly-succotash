@@ -8,7 +8,7 @@ export const validator = schema => async (ctx, next) => {
   const validate = ajv.compile(schema);
   const valid = validate(ctx.request.body);
   if (!valid) {
-    ctx.throw(validate.errors, 400);
+    ctx.throw(400, { message: validate.errors });
   }
   
   await next();

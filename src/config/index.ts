@@ -9,10 +9,4 @@ export default {
     dsn: process.env.SENTRY_DSN,
   },
   db: process.env.DB ?? 'local',
-  mongo: {
-    uri: process.env.MONGO_URI,
-  },
-  postgres: {
-    uri: process.env.POSTGRES_URI,
-  }
 }
