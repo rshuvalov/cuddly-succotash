@@ -1,4 +1,4 @@
-import * as Router from 'koa-router';
+import Router from 'koa-router';
 import { authRouter } from './auth';
 import { userRouter } from './users';
 import { isLogged } from './auth';

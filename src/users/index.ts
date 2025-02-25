@@ -1,4 +1,4 @@
-import * as Router from 'koa-router';
+import Router from 'koa-router';
 import { validator } from '../core';
 import { getUsers, createUser, getUserById, deleteUserById, updateUser } from './users.service';
 import { createUserValidationSchema, userValidationSchema } from './users.validation-schema';
