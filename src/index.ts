@@ -1,4 +1,4 @@
-import './instrument';
+// import './instrument';
 
 import Koa from 'koa';
 import koaBody from 'koa-body';
