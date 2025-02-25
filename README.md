@@ -6,12 +6,18 @@
 
 ### How to run
 #### Install dependencies:
-`npm i`
+```
+npm i
+```
 #### Create .env file from template:
-`cp .env-example .env` \
+```
+cp .env-example .env
+```
 P.S. for now only APP_PORT, JWT_SECRET interested
 #### Run dev server:
-`npm run dev`
+```
+npm run dev
+```
 
 ### Sentry
 ```
