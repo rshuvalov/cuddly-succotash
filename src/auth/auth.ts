@@ -6,7 +6,7 @@ export const isLogged = async (ctx, next) => {
     ctx.throw(401);
   }
   const [bearer, tokenVal] = authorization.split(' ');
-  if (!bearer || !verifyToken(tokenVal)) {
+  if (bearer !== 'Bearer' || !verifyToken(tokenVal)) {
     ctx.throw(403);
   }
   

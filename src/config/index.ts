@@ -1,4 +1,4 @@
-import fs, { mkdir } from 'node:fs';
+import * as fs from 'node:fs';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
