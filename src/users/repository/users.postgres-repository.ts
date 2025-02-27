@@ -1,35 +1,69 @@
-import * as crypto from 'node:crypto';
 import * as _ from 'lodash';
-import { User, UserRepository } from '../users.interface';
-import { UserModel } from '../models/users.postgres-model';
+import { sequelize } from '../../db/postgres';
+import { UserModel, FileModel } from '../models/postgres';
+import { User, UserRepository, File } from '../users.interface';
 
 const userPostgresRepository: UserRepository = {
-  find() {
-    return UserModel.findAll({ raw: true }) as any;
+  async find() {
+    return UserModel.findAll({ raw: true }) as unknown as User[];
   },
-  findById(id: string) {
-    return UserModel.findByPk(id, { raw: true }) as any;
+  async findById(userId: string) {
+    return UserModel.findByPk(userId, { raw: true }) as any;
   },
   findByEmail(email: string) {
     return UserModel.findOne({ where: { email }, raw: true }) as any;
   },
-  async create(data) {
+  async create(data: Omit<User, 'id'>) {
     const _id = crypto.randomUUID();
     const user = Object.assign(data, { _id });
     await UserModel.create(user);
-    return user;
+    return data;
   },
-  async update(data) {
+  async update(data: User) {
     await UserModel.update(_.omit(data, '_id'), {
       where: { _id: data._id }
     });
   },
-  async delete(id) {
+  async delete(userId) {
     await UserModel.destroy({
       where: {
-        _id: id,
+        _id: userId,
       }
     });
+  },
+  async createFile(userId: string, fileData: Omit<File, '_id'>) {
+    const _id = crypto.randomUUID();
+    const file = await FileModel.create(Object.assign(fileData, { _id }));
+    const user = await UserModel.findByPk(userId);
+    await user.addFile(file);
+  },
+  async findFileById(id) {
+    return FileModel.findByPk(id, { raw: true }) as any;
+  },
+  async addFile(fileId: string, userId: string) {
+    try {
+      const user = await UserModel.findByPk(userId);
+      const file = await FileModel.findByPk(fileId);
+      await user.addFile(file);
+    } catch (err) {
+      // handle dublication
+    } 
+  },
+  async findFilesByUserId(userId: string) {
+    const files = await FileModel.findAll({
+      include: [
+        {
+          model: UserModel,
+          attributes: [],
+          through: {
+            attributes: [],
+          },
+        }
+      ],
+      raw: true,
+    });
+
+    return files as any;
   }
 }
 

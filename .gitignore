@@ -3,3 +3,4 @@ db.json
 
 dist
 node_modules
+tmp

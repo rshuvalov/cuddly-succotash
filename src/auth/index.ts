@@ -36,7 +36,7 @@ authRouter.post('/sign-in',
         token: createToken(user),
       };
     } catch (err) {
-      ctx.throw(err.message, 401);
+      ctx.throw(401, err.message);
     }
   }
 );

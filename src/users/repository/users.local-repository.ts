@@ -22,7 +22,11 @@ const userLocalRepository: UserRepository = {
   },
   delete(id: string) {
     return db.storage.delete(id)
-  }
+  },
+  async createFile(user, fileData) {},
+  async findFileById(id) {},
+  async addFile() {},
+  async findFilesByUserId(userId) {}
 }
 
 export default userLocalRepository;

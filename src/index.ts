@@ -10,7 +10,12 @@ import { db } from './db';
   await db.init();
 
   const app = new Koa();
-  app.use(koaBody());
+  app.use(koaBody({
+    multipart: true,
+    formidable: {
+      maxFiles: 1,
+    },
+  }));
   app.use(async (ctx, next) => {
     try {
       await next();

@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import config from '../config';
 import * as _ from 'lodash';
 import * as bcrypt from 'bcrypt';
 import { repository as userRepository } from './repository';
@@ -31,3 +33,44 @@ export const updateUser = async (id: string, data) => {
 export const deleteUserById = id => userRepository.delete(id);
 
 export const getUserByEmail = email => userRepository.findByEmail(email);
+
+export const uploadUserFile = async (id, uploadedData) => {
+  const user = await getUserById(id);
+  if (!user) {
+    throw new Error('User with provided id does not exist');
+  }
+
+  const { newFilename, originalFilename, filepath } = uploadedData;
+  const fileData = {
+    newFilename,
+    originalFilename,
+    path: config.fileDir,
+  }
+  try {
+    fs.copyFileSync(filepath, config.fileDir);
+  } catch (err) {
+    console.log('Cannot move file', err);
+  }
+  await userRepository.createFile(id, fileData);
+}
+
+export const shareFile = async (fileId: string, userId: string) => {
+  const user = await userRepository.findById(userId);
+  if (!user) {
+    throw new Error('User with provided id does not exist');
+  }
+  const file = await userRepository.findFileById(fileId);
+  if (!file) {
+    throw new Error('File with provided id does not exist');
+  }
+  await userRepository.addFile(fileId, userId);
+}
+
+export const getProfileById = async id => {
+  const user = await userRepository.findById(id);
+  const files = await userRepository.findFilesByUserId(id);
+  if (files) {
+    Object.assign(user, { files });
+  }
+  return user;
+}
