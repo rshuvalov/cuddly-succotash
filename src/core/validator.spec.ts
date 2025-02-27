@@ -3,10 +3,12 @@ import { validator } from './validator';
 let validateMock = jest.fn();
 
 jest.mock('ajv', () => ({
+  __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     compile: jest.fn().mockImplementation(() => validateMock),
   })),
 }));
+jest.mock('ajv-formats');
 
 describe('validator.ts', () => {
   describe('validator', () => {
