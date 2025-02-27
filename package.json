@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "test:unit": "jest ./src",
-    "test:integration": "jest --detectOpenHandles ./tests"
+    "test:unit": "jest --verbose ./src",
+    "test:integration": "jest --verbose --detectOpenHandles ./tests"
   },
   "keywords": [],
   "author": "",
