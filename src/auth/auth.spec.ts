@@ -45,7 +45,7 @@ describe('auth.ts', () => {
       }
     });
 
-    it('shuld call next in token is valid', async () => {
+    it('should call next in token is valid', async () => {
       ctx.get.mockReturnValue(token);
       (core.verifyToken as any).mockReturnValue(true);
       await isLogged(ctx, next);

@@ -1,11 +1,13 @@
 import supertest from 'supertest';
 import { app } from '../src/app';
+import { db } from '../src/db';
 
 describe('POST /api/v1/auth/sign-in', () => {
   let server;
   let request;
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    await db.init();
     server = app.listen();
     request = supertest(server);
   });
@@ -21,7 +23,7 @@ describe('POST /api/v1/auth/sign-in', () => {
       .expect(400)
   });
 
-  it('should return 400 if email not exists', async () => {
+  it('should return 401 if email not exists', async () => {
     const response = await request
       .post('/api/v1/auth/sign-in')
       .send({ email: 'blabla@blabla.com', password: 'bla' })
@@ -36,6 +38,6 @@ describe('POST /api/v1/auth/sign-in', () => {
       .send({ email: 'random@email.com', password: 'random@email.com' })
       .expect(200);
 
-    expect(response.body.token).not.toBeUndefined()
+    expect(response.body.token).not.toBeUndefined();
   });
 });
