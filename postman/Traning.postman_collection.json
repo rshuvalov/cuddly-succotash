@@ -1,0 +1,399 @@
+{
+	"info": {
+		"_postman_id": "34f9f0a9-3d77-419f-965f-4e492a6b4c86",
+		"name": "Traning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42622118"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should receive status code 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('should receive token in the body', () => {",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.token).not.undefined;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{defaultUserEmail}}\",\n    \"password\": \"{{defaultUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/sign-in",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"name\": \"Random User\",\n    \"password\": \"{{$randomEmail}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/sign-up",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should not return password', () => {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.find(i => i.password)).to.be.undefined;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\",\n    \"name\": \"{{$randomFullName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"Muriel_Cruickshank88@hotmail.com\",\n    \"password\": \"$2b$10$.U15k.DVgul9/XzK2lDlN.7dA9ctqKK0K8kyc3Vq1yYC6JLI.MlPa\",\n    \"name\": \"Maurice Schmidt\",\n    \"_id\": \"e47536f2-6ffd-42d6-b0c7-623202a7c5f4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users/:userId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "e47536f2-6ffd-42d6-b0c7-623202a7c5f4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/:userId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "e04e2fa0-ee0d-4e37-9390-16eca54c05c8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user file",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/rshuvalov/Desktop/Desktop/Screenshot 2025-02-27 at 00.59.02.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/users/:id/file",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":id",
+								"file"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ec8960f1-40eb-44f9-b28b-88dca7450435"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Share file",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"e7dc8c82-a1e9-4247-93ec-69895f8aeb29\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users/:id/file/:fileId/share",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":id",
+								"file",
+								":fileId",
+								"share"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ec8960f1-40eb-44f9-b28b-88dca7450435"
+								},
+								{
+									"key": "fileId",
+									"value": "9720e53b-637a-4b92-952b-24e896daa12f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/:id/profile",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								":id",
+								"profile"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ec8960f1-40eb-44f9-b28b-88dca7450435"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const getOptions = (email, password) => {",
+					"    const options = {",
+					"        url:  `${pm.variables.get('domain')}/auth/sign-in`, ",
+					"        method: 'POST',",
+					"        header: {",
+					"            'Accept': '*/*',",
+					"            'Content-Type': 'application/json',",
+					"        },",
+					"        body: JSON.stringify({",
+					"            email,",
+					"            password,",
+					"        }),",
+					"    }",
+					"",
+					"    return options;",
+					"};",
+					"",
+					"const userOptions = getOptions(",
+					"    pm.variables.get('defaultUserEmail'),",
+					"    pm.variables.get('defaultUserPassword')",
+					");",
+					"pm.sendRequest(userOptions, function (err, response) {",
+					"    try {",
+					"        const { token } = response.json();",
+					"        pm.collectionVariables.set('token', token);",
+					"    } catch (err) {",
+					"        //",
+					"    }",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
