@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as dotenv from 'dotenv';
+import { rabbitmq } from '../messaging';
 
 dotenv.config();
 
@@ -17,10 +18,20 @@ const config = {
     uri: process.env.POSTGRES_URI,
   },
   fileDir: process.env.FILES_DIR,
+  kafka: {
+    uri: process.env.KAFKA_URI,
+  },
+  rabbitmq: {
+    uri: process.env.RABBITMQ_URI,
+  }
 }
 
 if (!fs.existsSync(config.fileDir)) {
-  fs.mkdirSync(config.fileDir);
+  try {
+    fs.mkdirSync(config.fileDir);
+  } catch (err) {
+    //
+  }
 }
 
 export default config;

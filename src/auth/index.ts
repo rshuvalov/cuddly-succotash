@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { createToken, validator } from '../core';
 import { createUserValidationSchema, createUser, getUserByEmail } from '../users';
 import { signInValidationSchema } from './auth.vavlidation-schema';
+import { kafka, rabbitmq } from '../messaging';
 export * from './auth';
 
 export const authRouter = new Router({
@@ -32,6 +33,10 @@ authRouter.post('/sign-in',
         throw new Error(`User with email ${email} not found`);
       }
       bcrypt.compareSync(password, user.password);
+      
+      rabbitmq.sendMessage({ msg: JSON.stringify({ userId: user._id, action: 'sign-in', timestamp: Date.now() }) });
+      kafka.sendMessage({ msg: JSON.stringify({ userId: user._id, action: 'sign-in', timestamp: Date.now() }) });
+      
       ctx.body = {
         token: createToken(user),
       };
